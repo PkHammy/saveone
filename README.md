@@ -4,13 +4,9 @@ A static HTML, CSS, and JavaScript game. Choose one favourite from each release 
 
 ## Preview locally
 
-Using uv (Python only serves the static files):
+Open this folder in VS Code and use the **Live Server** extension to preview `index.html`. No Python or uv is required.
 
-```sh
-uv run --no-project python -m http.server 8001
-```
-
-Open http://localhost:8001. Opening index.html directly from disk will not load the JSON catalogue reliably.
+Use the address shown by Live Server. The JSON catalogue needs an HTTP preview, so opening index.html directly from disk is not supported.
 
 ## Publish free on GitHub Pages
 
@@ -46,5 +42,3 @@ Node is needed only for development checks, not to play or deploy the site:
 node --check assets/app.js
 node tests/static.test.cjs
 ```
-
-The previous Django source is preserved outside this project in `../django-larp-django-source-backup`. Local Django databases and environments remain in the earlier backup folder. Existing Django UUID links are not static share codes and are not migrated automatically.
