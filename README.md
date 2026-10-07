@@ -25,9 +25,9 @@ No hosting credentials are bundled. This project is ready to deploy but has not 
 - Undo revisits the previous year, including from completed results.
 - Twelve choices appear initially. Expand to see the rest of the available year catalogue.
 - Completed results show the full collection and top three genres, with a downloadable PNG poster.
-- Copy code contains the version, player name, years, and stable game IDs encoded as URL-safe Base64 JSON. It is reversible, not a hash or encryption. Anyone holding the code can read it.
+- New share codes use SO2: the start year, number of picks, UTF-8 player name, and permanent 16-bit game IDs encoded as URL-safe Base64. Existing SO1 JSON codes and links remain importable. It is reversible, not a hash or encryption. Anyone holding the code can read it.
 - The homepage imports a code or collection link. Imported collections do not overwrite your saved progress and cannot undo someone else's picks.
-- Collection links keep their data in the URL fragment, so there is no collection database. Recipients load the same catalogue to decode the IDs. Keep existing IDs and archived records when updating the catalogue.
+- Collection links keep their data in the URL fragment, so there is no collection database. Recipients load the same catalogue to decode the IDs. Keep existing IDs and archived records when updating the catalogue. The positions in data/share-ids.json are permanent: never reorder or remove entries; append new game IDs only.
 - Codes are validated for size, version, known IDs, complete choices, and matching release years. They are user-editable and do not certify authenticity.
 
 ## Catalogue and artwork
@@ -44,4 +44,5 @@ Node is needed only for development checks, not to play or deploy the site:
 node --check assets/app.js
 node tests/static.test.cjs
 ```
+
 

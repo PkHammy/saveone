@@ -2,6 +2,8 @@
 let games,
   byId,
   years,
+  shareIds,
+  shareIndex,
   run = null;
 const main = document.querySelector('#main');
 const escapeHTML = (value) =>
@@ -52,9 +54,22 @@ function validate(value, complete = false) {
   return { v: 1, name: value.name, years: value.years, picks: value.picks };
 }
 function encode(value) {
-  const bytes = new TextEncoder().encode(JSON.stringify(value));
+  validate(value, true);
+  const name = new TextEncoder().encode(value.name);
+  const bytes = new Uint8Array(5 + name.length + value.picks.length * 2);
+  const view = new DataView(bytes.buffer);
+  view.setUint16(0, value.years[0]);
+  bytes[2] = value.picks.length;
+  bytes[3] = name.length;
+  bytes[4] = 0;
+  bytes.set(name, 5);
+  value.picks.forEach((id, index) => {
+    const numericId = shareIndex.get(id);
+    if (numericId === undefined || numericId > 65535) throw Error('Game has no share ID.');
+    view.setUint16(5 + name.length + index * 2, numericId);
+  });
   return (
-    'SO1.' +
+    'SO2.' +
     btoa(String.fromCharCode(...bytes))
       .replaceAll('+', '-')
       .replaceAll('/', '_')
@@ -67,15 +82,24 @@ function decode(code) {
     const url = new URL(code);
     code = new URLSearchParams(url.hash.slice(1)).get('collection') || '';
   }
-  if (!/^SO1\.[A-Za-z0-9_-]+$/.test(code) || code.length > 24000)
+  if (!/^SO[12]\.[A-Za-z0-9_-]+$/.test(code) || code.length > 24000)
     throw Error('Paste a valid Save One code or collection link.');
   const raw = atob(code.slice(4).replaceAll('-', '+').replaceAll('_', '/'));
+  const bytes = Uint8Array.from(raw, (c) => c.charCodeAt(0));
+  if (code.startsWith('SO1.')) {
+    return validate(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)), true);
+  }
+  if (bytes.length < 5 || bytes[4] !== 0 || bytes.length !== 5 + bytes[3] + bytes[2] * 2)
+    throw Error('Invalid collection code.');
+  const view = new DataView(bytes.buffer);
+  const start = view.getUint16(0);
+  const picks = Array.from(
+    { length: bytes[2] },
+    (_, index) => shareIds[view.getUint16(5 + bytes[3] + index * 2)],
+  );
+  const name = new TextDecoder('utf-8', { fatal: true }).decode(bytes.slice(5, 5 + bytes[3]));
   return validate(
-    JSON.parse(
-      new TextDecoder('utf-8', { fatal: true }).decode(
-        Uint8Array.from(raw, (c) => c.charCodeAt(0)),
-      ),
-    ),
+    { v: 1, name, years: Array.from({ length: picks.length }, (_, index) => start + index), picks },
     true,
   );
 }
@@ -109,7 +133,7 @@ function home() {
   document.title = 'Save One';
   const options = (selected) =>
     years.map((y) => `<option ${y === selected ? 'selected' : ''}>${y}</option>`).join('');
-  main.innerHTML = `<section class="hero"><div><p class="eyebrow">Your gaming history, one year at a time</p><h1>One year.<br>One favourite.</h1><p class="lead">Pick the game you'd keep from each year.<br>Build a collection and share it with friends.</p><div class="hero-actions"><a class="button primary" href="#start">Start a collection →</a>${run ? '<button class="button secondary" id="resume">Continue collection</button>' : ''}</div><div class="hero-stats"><div><strong>${years.length}</strong><span>Years to explore</span></div><div><strong>${games.length}</strong><span>Games to choose from</span></div><div><strong>1</strong><span>Pick each year</span></div></div></div><div class="hero-art"><div class="art-grid">${[...order(1998).slice(0, 3), ...order(2015).slice(0, 3)].map(cover).join('')}</div></div></section><section class="start-section" id="start"><div><p class="eyebrow">Choose your years</p><h2>Where do you<br>want to start?</h2><p class="muted">Pick your favourites, discover your top genres, and share a code with friends. No account needed.</p></div><form class="start-form" id="start-form"><h3>Make it yours</h3><label for="nickname">Your name (optional)</label><input id="nickname" maxlength="40" autocomplete="nickname"><div class="field-grid"><div><label for="start-year">Start year</label><select id="start-year">${options(years[0])}</select></div><div><label for="end-year">End year</label><select id="end-year">${options(years.at(-1))}</select></div></div><p id="start-error" role="alert"></p><button class="button primary wide">Start picking →</button><p class="small muted">Progress stays on this device. Starting a new collection replaces your saved run.</p></form></section><section class="import-section"><form class="start-form" id="import-form"><h3>Import a collection</h3><p class="muted">Paste a friend's code or collection link to see their picks.</p><label for="import-code">Collection code</label><textarea id="import-code" required rows="4" maxlength="24000" placeholder="SO1.…"></textarea><p id="import-error" role="alert"></p><button class="button secondary">Import collection</button></form></section>`;
+  main.innerHTML = `<section class="hero"><div><p class="eyebrow">Your gaming history, one year at a time</p><h1>One year.<br>One favourite.</h1><p class="lead">Pick the game you'd keep from each year.<br>Build a collection and share it with friends.</p><div class="hero-actions"><a class="button primary" href="#start">Start a collection →</a>${run ? '<button class="button secondary" id="resume">Continue collection</button>' : ''}</div><div class="hero-stats"><div><strong>${years.length}</strong><span>Years to explore</span></div><div><strong>${games.length}</strong><span>Games to choose from</span></div><div><strong>1</strong><span>Pick each year</span></div></div></div><div class="hero-art"><div class="art-grid">${[...order(1998).slice(0, 3), ...order(2015).slice(0, 3)].map(cover).join('')}</div></div></section><section class="start-section" id="start"><div><p class="eyebrow">Choose your years</p><h2>Where do you<br>want to start?</h2><p class="muted">Pick your favourites, discover your top genres, and share a code with friends. No account needed.</p></div><form class="start-form" id="start-form"><h3>Make it yours</h3><label for="nickname">Your name (optional)</label><input id="nickname" maxlength="40" autocomplete="nickname"><div class="field-grid"><div><label for="start-year">Start year</label><select id="start-year">${options(years[0])}</select></div><div><label for="end-year">End year</label><select id="end-year">${options(years.at(-1))}</select></div></div><p id="start-error" role="alert"></p><button class="button primary wide">Start picking →</button><p class="small muted">Progress stays on this device. Starting a new collection replaces your saved run.</p></form></section><section class="import-section"><form class="start-form" id="import-form"><h3>Import a collection</h3><p class="muted">Paste a friend's code or collection link to see their picks.</p><label for="import-code">Collection code</label><textarea id="import-code" required rows="4" maxlength="24000" placeholder="SO2.…"></textarea><p id="import-error" role="alert"></p><button class="button secondary">Import collection</button></form></section>`;
   document.querySelector('#resume')?.addEventListener('click', () => {
     location.hash = '#play';
   });
@@ -333,12 +357,18 @@ Promise.all([
     if (!r.ok) throw Error();
     return r.json();
   }),
+  fetch('data/share-ids.json').then((r) => {
+    if (!r.ok) throw Error();
+    return r.json();
+  }),
   fetch('data/archive.json').then((r) => {
     if (!r.ok) throw Error();
     return r.json();
   }),
 ])
-  .then(([catalog, archive]) => {
+  .then(([catalog, ids, archive]) => {
+    shareIds = ids;
+    shareIndex = new Map(ids.map((id, index) => [id, index]));
     games = catalog.games;
     byId = new Map([...archive.games, ...games].map((g) => [g.id, g]));
     years = [...new Set(games.map((g) => g.year))].sort((a, b) => a - b);

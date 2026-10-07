@@ -16,8 +16,9 @@ const context = vm.createContext({
 vm.runInContext(fs.readFileSync('assets/app.js', 'utf8'), context);
 context.catalog = catalog;
 context.archive = archive;
+context.ids = JSON.parse(fs.readFileSync('data/share-ids.json'));
 vm.runInContext(
-  'games=catalog;byId=new Map([...archive,...games].map(g=>[g.id,g]));years=[...new Set(games.map(g=>g.year))].sort((a,b)=>a-b)',
+  'shareIds=ids;shareIndex=new Map(ids.map((id,index)=>[id,index]));games=catalog;byId=new Map([...archive,...games].map(g=>[g.id,g]));years=[...new Set(games.map(g=>g.year))].sort((a,b)=>a-b)',
   context,
 );
 const evalJS = (s) => vm.runInContext(s, context);
@@ -39,4 +40,17 @@ assert.equal(evalJS("escapeHTML('<img onerror=alert(1)>')"), '&lt;img onerror=al
 assert.equal(evalJS("safeURL('javascript:alert(1)')"), '#');
 assert.ok(evalJS("order(2021).findIndex(g=>g.title.includes('The Trilogy'))") > 11);
 assert.equal(evalJS('stats(value).reduce((sum,row)=>sum+row[1],0)'), 46);
-console.log('13 static validation checks passed.');
+assert.ok(evalJS('encode(value).length') < 200);
+assert.equal(
+  evalJS(
+    "decode('SO1.'+btoa(unescape(encodeURIComponent(JSON.stringify(value)))).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'' )).picks.length",
+  ),
+  46,
+);
+const oldIds = [...context.ids];
+context.ids.push('future-game');
+assert.equal(evalJS('decode(encode(value)).picks.length'), 46);
+assert.deepEqual(context.ids.slice(0, oldIds.length), oldIds);
+assert.throws(() => evalJS('decode(encode(value).slice(0,-4))'));
+console.log('Compact-code and legacy compatibility checks passed.');
+console.log('46-year Unicode collection: ' + evalJS('encode(value).length') + ' characters.');
