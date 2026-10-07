@@ -1,5 +1,7 @@
 # Save One
 
+Made by [Hammy](https://github.com/PkHammy) with help of AI.
+
 A static HTML, CSS, and JavaScript game. Choose one favourite from each release year, see your top genres, and share a self-contained collection code. No backend, database, Docker, accounts, build step, or API keys.
 
 ## Preview locally
@@ -42,3 +44,4 @@ Node is needed only for development checks, not to play or deploy the site:
 node --check assets/app.js
 node tests/static.test.cjs
 ```
+
