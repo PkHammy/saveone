@@ -1,0 +1,29 @@
+# Python and uv environments
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local data and generated assets
+*.sqlite3
+*.sqlite3-*
+staticfiles/
+media/
+.catalog-cache/
+collection-preview.png
+*.log
+
+# Secrets (keep the documented example)
+.env
+.env.*
+!.env.example
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
