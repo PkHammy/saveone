@@ -1,0 +1,353 @@
+.tournament-intro {
+  text-align: center;
+  padding: 40px 20px 55px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+.trophy-orbit {
+  display: grid;
+  place-items: center;
+  width: 110px;
+  height: 110px;
+  margin: 5px auto 30px;
+  border-radius: 50%;
+  background: var(--raised);
+  color: var(--gold);
+  border: 1px solid var(--line);
+  outline: 1px dashed var(--line);
+  outline-offset: 8px;
+}
+.tournament-intro h2 {
+  margin: 18px 0;
+  font-size: clamp(35px, 4vw, 50px);
+}
+.tournament-intro .muted {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.tournament-intro > .mantine-Button-root {
+  margin: 25px 0 18px;
+}
+.tournament-intro > .micro {
+  display: block;
+  max-width: 350px;
+  margin: auto;
+}
+.tournament-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.duel-heading {
+  text-align: center;
+  margin: 28px 0;
+}
+.duel-heading h2 {
+  margin: 10px 0 14px;
+  font-size: 38px;
+}
+.duel-heading p:last-child {
+  font-size: 13px;
+}
+.duel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 65px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+.duel .game-card-art .cover {
+  aspect-ratio: 3/3.5;
+}
+.duel-vs {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: auto;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--panel);
+  font-size: 12px;
+  font-weight: 750;
+}
+.tournament-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 28px 0 20px;
+}
+.tournament-tools > div {
+  display: flex;
+  gap: 8px;
+}
+.tournament-note {
+  text-align: center;
+  margin-top: 20px;
+}
+.champion-feature {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 42px;
+  align-items: center;
+  padding: 35px;
+  margin: 25px 0 35px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  position: relative;
+}
+.champion-art {
+  position: relative;
+}
+.champion-art .cover {
+  border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line));
+}
+.champion-crown {
+  position: absolute;
+  bottom: -18px;
+  right: -16px;
+  width: 60px;
+  height: 60px;
+  background: var(--gold);
+  color: var(--bg);
+  border: 5px solid var(--panel);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.champion-feature h2 {
+  font-size: clamp(27px, 3.8vw, 44px);
+  margin: 20px 0 14px;
+  max-width: 600px;
+}
+.champion-feature p {
+  font-size: 13px;
+}
+.champion-statement {
+  margin-top: 22px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.champion-statement strong {
+  color: var(--text);
+  font-weight: 500;
+}
+.champion-path .section-heading {
+  margin-bottom: 15px;
+}
+.champion-path h3 {
+  font-size: 20px;
+}
+.champion-path ol {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+.champion-path li {
+  padding: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.path-round {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.champion-path li > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.champion-path li > div > span {
+  flex: 1;
+  min-width: 0;
+}
+.champion-path li > div > svg {
+  color: var(--accent);
+}
+.champion-path small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  margin-bottom: 3px;
+}
+.champion-path strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.history-description {
+  font-size: 13px;
+  margin: 0 0 18px;
+}
+.history-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.history-round-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 650;
+  padding-right: 12px;
+}
+.mantine-Accordion-item {
+  border-color: var(--line);
+  background: var(--bg);
+  border-radius: 12px;
+}
+.mantine-Accordion-control {
+  color: var(--text);
+  border-radius: 12px;
+}
+.match-records {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.match-record {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.match-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--muted);
+  padding: 9px 11px;
+}
+.match-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 11px;
+  border-top: 1px solid var(--line);
+  min-height: 64px;
+}
+.match-name {
+  min-width: 0;
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.match-name small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.match-verdict {
+  color: var(--muted);
+  font-size: 9px;
+}
+.match-row--won {
+  background: color-mix(in srgb, var(--accent) 6%, var(--panel));
+}
+.match-row--won .match-verdict {
+  color: var(--accent);
+  font-weight: 700;
+}
+.match-row--lost {
+  color: var(--muted);
+}
+.match-row--lost img {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+@media (max-width: 800px) {
+  .champion-feature {
+    grid-template-columns: 150px 1fr;
+    gap: 28px;
+    padding: 25px;
+  }
+  .champion-path ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .duel-heading h2 {
+    font-size: 30px;
+  }
+  .duel-heading p:last-child {
+    font-size: 12px;
+  }
+  .duel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+  }
+  .duel-vs {
+    display: none;
+  }
+  .duel .game-card-caption h3 {
+    font-size: 13px;
+  }
+  .champion-feature {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px 20px;
+    gap: 28px;
+  }
+  .champion-art {
+    width: 145px;
+  }
+  .champion-feature h2 {
+    font-size: 29px;
+    margin-top: 15px;
+  }
+  .champion-statement {
+    margin-top: 14px;
+  }
+  .champion-path ol {
+    grid-template-columns: 1fr;
+  }
+  .champion-path li {
+    padding: 12px;
+  }
+  .path-round {
+    margin-bottom: 8px;
+  }
+  .champion-path strong {
+    font-size: 12px;
+  }
+  .tournament-tools {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .tournament-tools > div {
+    justify-content: center;
+  }
+  .match-records {
+    grid-template-columns: 1fr;
+  }
+  .tournament-toolbar {
+    gap: 10px;
+  }
+  .tournament-toolbar .micro {
+    font-size: 10px;
+  }
+  .tournament-intro {
+    padding: 30px 16px;
+  }
+}
