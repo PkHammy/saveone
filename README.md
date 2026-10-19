@@ -24,6 +24,12 @@ Open the local address Vite prints. Use `npm run build` to create the static sit
 
 No hosting credentials are bundled. GitHub Pages builds the site automatically after a push; select GitHub Actions as the publishing source.
 
+### Blank page on GitHub Pages?
+
+If the published HTML still references `/src/main.jsx`, Pages is serving the source folder instead of the Vite build. In **Settings → Pages**, switch **Source** to **GitHub Actions**, then run **Actions → Deploy static site**. The workflow publishes only `dist/`; do not select the `main` branch root as the publishing source.
+
+If the deployment says **Waiting**, open its run and inspect the `github-pages` environment message. Approve it with **Review deployments** if GitHub requests approval. Builds and tests run in a separate job so their results remain visible while deployment waits. After deployment succeeds, refresh the site; its HTML should reference `./assets/index-….js` rather than `/src/main.jsx`.
+
 ## Gameplay and sharing
 
 - Progress and theme preference stay in your browser's local storage. Clearing browser storage loses the current run; save a completed share code to keep it.

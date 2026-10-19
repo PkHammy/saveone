@@ -10,7 +10,9 @@ const catalog = JSON.parse(fs.readFileSync('data/games.json')).games;
 const archive = JSON.parse(fs.readFileSync('data/archive.json')).games;
 const manifest = JSON.parse(fs.readFileSync('data/share-years.json'));
 assert.equal(
-  createHash('sha256').update(fs.readFileSync('data/share-years.json')).digest('hex'),
+  createHash('sha256')
+    .update(fs.readFileSync('data/share-years.json', 'utf8').replace(/\r\n/g, '\n'))
+    .digest('hex'),
   '70ae9d0dfaef047a2069799fdf91f979b0082da83ba67ab792d62b29859e3b55',
   'The compact-code manifest must remain frozen.',
 );
